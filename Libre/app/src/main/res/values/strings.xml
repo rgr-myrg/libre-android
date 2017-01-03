@@ -1,0 +1,9 @@
+<resources>
+	<string name="app_name">Libre</string>
+	<string name="action_settings">Settings</string>
+
+	<string name="splash_screen_welcome_msg">One peaceful moment.</string>
+	<string name="splash_screen_error_message">
+		Oops! Something went wrong. No cake will be served.
+	</string>
+</resources>
