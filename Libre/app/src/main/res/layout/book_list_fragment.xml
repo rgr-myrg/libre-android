@@ -1,0 +1,10 @@
+<fragment
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/book_list_fragment"
+	android:name="net.usrlib.libre.view.BookListFragment_"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	app:layout_behavior="@string/appbar_scrolling_view_behavior"
+	tools:layout="@layout/book_list_fragment_main"/>

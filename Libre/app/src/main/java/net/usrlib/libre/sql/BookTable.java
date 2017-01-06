@@ -13,7 +13,8 @@ public class BookTable {
 	public static final String CREATE_TABLE = String.format(
 			"CREATE TABLE IF NOT EXISTS %s ("
 					+ "%s INTEGER PRIMARY KEY,"
-					+ "%s TEXT NOT NULL,"
+					+ "%s TEXT,"
+					+ "%s TEXT,"
 					+ "%s TEXT,"
 					+ "%s TEXT,"
 					+ "%s TEXT,"
@@ -23,7 +24,8 @@ public class BookTable {
 					+ ")",
 			TABLE_NAME,
 			Book.BOOK_ID,
-			Book.TITLE,
+			Book.TITLE_EN,
+			Book.TITLE_SP,
 			Book.AUTHOR,
 			Book.IMAGE_URL,
 			Book.WEBSITE_URL,
@@ -37,4 +39,6 @@ public class BookTable {
 	public static final String SELECT_ITEM_COUNT_WITH_BOOK_ID = String.format(
 			"SELECT %s FROM %s WHERE %s = ?", Book.ITEM_COUNT, TABLE_NAME, Book.BOOK_ID
 	);
+
+	public static final String SELECT_ALL = String.format("SELECT * FROM %s", TABLE_NAME);
 }

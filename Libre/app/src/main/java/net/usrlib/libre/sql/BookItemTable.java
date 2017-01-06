@@ -14,7 +14,7 @@ public class BookItemTable {
 			"CREATE TABLE IF NOT EXISTS %s ("
 					+ "%s INTEGER PRIMARY KEY,"
 					+ "%s INTEGER NOT NULL,"
-					+ "%s TEXT NOT NULL,"
+					+ "%s TEXT,"
 					+ "%s TEXT,"
 					+ "%s TEXT,"
 					+ "%s TEXT,"
@@ -23,12 +23,17 @@ public class BookItemTable {
 			TABLE_NAME,
 			BookItem.ITEM_ID,
 			BookItem.BOOK_ID,
-			BookItem.TITLE,
-			BookItem.SPANISH,
-			BookItem.ENGLISH,
+			BookItem.TITLE_EN,
+			BookItem.TITLE_SP,
+			BookItem.CONTENT_SP,
+			BookItem.CONTENT_EN,
 			BookItem.IMAGE_URL,
 			TIMESTAMP
 	);
 
 	public static final String DROP_TABLE = String.format("DROP TABLE IF EXISTS %s", TABLE_NAME);
+
+	public static final String SELECT_ALL_WITH_BOOK_ID = String.format(
+			"SELECT * FROM %s WHERE %s = ?", TABLE_NAME, BookItem.BOOK_ID
+	);
 }

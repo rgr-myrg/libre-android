@@ -1,6 +1,7 @@
 package net.usrlib.libre.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,12 +12,13 @@ import java.util.List;
  */
 
 public class BookItem {
-	public static final String ITEM_ID = "itemId";
-	public static final String BOOK_ID = "bookId";
-	public static final String TITLE = "title";
-	public static final String SPANISH = "spanish";
-	public static final String ENGLISH = "english";
-	public static final String IMAGE_URL = "imageUrl";
+	public static final String ITEM_ID    = "itemId";
+	public static final String BOOK_ID    = "bookId";
+	public static final String TITLE_EN   = "titleEN";
+	public static final String TITLE_SP   = "titleSP";
+	public static final String CONTENT_SP = "contentSP";
+	public static final String CONTENT_EN = "contentEN";
+	public static final String IMAGE_URL  = "imageUrl";
 
 	@SerializedName("itemId")
 	private int itemId;
@@ -24,14 +26,17 @@ public class BookItem {
 	@SerializedName("bookId")
 	private int bookId;
 
-	@SerializedName("title")
-	private String title;
+	@SerializedName("titleEN")
+	private String titleEN;
+
+	@SerializedName("titleSP")
+	private String titleSP;
 
 	@SerializedName("spanish")
-	private String spanish;
+	private String contentSP;
 
 	@SerializedName("english")
-	private String english;
+	private String contentEN;
 
 	@SerializedName("image")
 	private String imageUrl;
@@ -44,16 +49,20 @@ public class BookItem {
 		return bookId;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getTitleEN() {
+		return titleEN;
 	}
 
-	public String getSpanish() {
-		return spanish;
+	public String getTitleSP() {
+		return titleSP;
 	}
 
-	public String getEnglish() {
-		return english;
+	public String getContentSP() {
+		return contentSP;
+	}
+
+	public String getContentEN() {
+		return contentEN;
 	}
 
 	public String getImageUrl() {
@@ -65,9 +74,10 @@ public class BookItem {
 
 		values.put(ITEM_ID, itemId);
 		values.put(BOOK_ID, bookId);
-		values.put(TITLE, title);
-		values.put(SPANISH, spanish);
-		values.put(ENGLISH, english);
+		values.put(TITLE_EN, titleEN);
+		values.put(TITLE_SP, titleSP);
+		values.put(CONTENT_SP, contentSP);
+		values.put(CONTENT_EN, contentEN);
 		values.put(IMAGE_URL, imageUrl);
 
 		return values;
@@ -81,5 +91,23 @@ public class BookItem {
 		}
 
 		return contentValues;
+	}
+
+	public static BookItem fromDbCursor(final Cursor cursor) {
+		if (cursor == null) {
+			return null;
+		}
+
+		final BookItem bookItem = new BookItem();
+
+		bookItem.itemId    = cursor.getInt(cursor.getColumnIndex(BookItem.ITEM_ID));
+		bookItem.bookId    = cursor.getInt(cursor.getColumnIndex(BookItem.BOOK_ID));
+		bookItem.titleEN   = cursor.getString(cursor.getColumnIndex(BookItem.TITLE_EN));
+		bookItem.titleSP   = cursor.getString(cursor.getColumnIndex(BookItem.TITLE_SP));
+		bookItem.contentSP = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT_SP));
+		bookItem.contentEN = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT_EN));
+		bookItem.imageUrl  = cursor.getString(cursor.getColumnIndex(BookItem.IMAGE_URL));
+
+		return bookItem;
 	}
 }

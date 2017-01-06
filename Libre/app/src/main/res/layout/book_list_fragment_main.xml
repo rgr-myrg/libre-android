@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/book_list_fragment_main"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingTop="@dimen/activity_vertical_margin"
+	tools:context=".view.BookListFragment_"
+	tools:showIn="@layout/book_list_activity">
+
+	<include layout="@layout/book_list_recycler_view"/>
+    <include layout="@layout/smart_banner_ad_view"/>
+</RelativeLayout>

@@ -7,7 +7,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import net.usrlib.libre.BuildConfig;
 import net.usrlib.libre.sql.BookItemTable;
@@ -32,7 +31,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		if (BuildConfig.DEBUG) Log.i(TAG, "onCreate starts up");
+		if (BuildConfig.DEBUG) Logger.i(TAG, "onCreate starts up");
 
 		db.execSQL(BookTable.CREATE_TABLE);
 		db.execSQL(BookItemTable.CREATE_TABLE);
@@ -103,7 +102,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	public Cursor getDbCursorWithSql(final String sql) {
-		if (BuildConfig.DEBUG) Log.i(TAG, sql);
+		if (BuildConfig.DEBUG) Logger.i(TAG, sql);
 		final SQLiteDatabase db = getWritableDatabase();
 
 		if (db == null) {
@@ -127,7 +126,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		try {
 			for (ContentValues item : values) {
 				if (BuildConfig.DEBUG) {
-					Log.i(TAG, item.toString());
+					Logger.i(TAG, item.toString());
 				}
 
 				long newID = db.insertWithOnConflict(tableName, null, item, CONFLICT_REPLACE);

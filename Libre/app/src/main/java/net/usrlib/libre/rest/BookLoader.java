@@ -1,10 +1,9 @@
 package net.usrlib.libre.rest;
 
-import android.util.Log;
-
 import net.usrlib.libre.BuildConfig;
 import net.usrlib.libre.model.Book;
 import net.usrlib.libre.model.BookItem;
+import net.usrlib.libre.util.Logger;
 
 import java.util.List;
 
@@ -70,7 +69,7 @@ public class BookLoader {
 	}
 
 	private void fetchBookList() {
-		if (BuildConfig.DEBUG) Log.i(TAG, "Fetching book list");
+		if (BuildConfig.DEBUG) Logger.i(TAG, "Fetching book list");
 
 		final Call<List<Book>> bookListCall = mRetrofitApi.getBookList();
 
@@ -96,7 +95,7 @@ public class BookLoader {
 	}
 
 	private void fetchBookItemForList(final List<Book> bookList) {
-		if (BuildConfig.DEBUG) Log.i(TAG, "Fetching items for this book");
+		if (BuildConfig.DEBUG) Logger.i(TAG, "Fetching items for this book");
 
 		for (int i = 0; i < bookList.size(); i++) {
 			Book book = bookList.get(i);
@@ -112,7 +111,8 @@ public class BookLoader {
 
 			// Only fetch items if callback returns true
 			if (!shouldFetchBookItems) {
-				if (BuildConfig.DEBUG) Log.i(TAG, "shouldFetchBookItems is false. Skip book items");
+				if (BuildConfig.DEBUG) Logger.i(TAG, "shouldFetchBookItems is false. Skip book items");
+				mOnFinished.run();
 				return;
 			}
 
