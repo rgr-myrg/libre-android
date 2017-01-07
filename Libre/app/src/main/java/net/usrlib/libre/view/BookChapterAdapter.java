@@ -22,7 +22,7 @@ public class BookChapterAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(int position) {
 		mCursor.moveToPosition(position);
 
-		return BookChapterFragment.newInstance(BookItem.fromDbCursor(mCursor));
+		return BookChapterFragment_.newInstance(BookItem.fromDbCursor(mCursor));
 	}
 
 	@Override

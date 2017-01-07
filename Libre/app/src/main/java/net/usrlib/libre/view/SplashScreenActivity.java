@@ -6,6 +6,8 @@ import android.view.Window;
 
 import net.usrlib.libre.R;
 import net.usrlib.libre.presenter.Presenter;
+import net.usrlib.libre.service.FetchDataBroadcastReceiver;
+import net.usrlib.libre.util.Preferences;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -26,13 +28,19 @@ public class SplashScreenActivity extends AppCompatActivity {
 	@AfterViews
 	@Background
 	protected void onAfterViews() {
+		// Schedule service for data updates
+		if (!Preferences.hasDataInstall(getApplicationContext())){
+			FetchDataBroadcastReceiver.scheduleService(this);
+		}
+
+		// Install data and move to BookListActivity
 		Presenter.performDataInstall(getApplicationContext(), success -> {
-			startNextActivity(success);
+			startBookListActivity();
 		});
 	}
 
 	@UiThread
-	protected void startNextActivity(final boolean success) {
+	protected void startBookListActivity() {
 		startActivity(
 				new Intent(getBaseContext(), BookListActivity_.class)
 		);

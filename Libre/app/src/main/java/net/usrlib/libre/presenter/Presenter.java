@@ -23,8 +23,9 @@ public class Presenter {
 	public static final String TAG = Presenter.class.getSimpleName();
 	public static final boolean DEBUG = BuildConfig.DEBUG;
 
-	private static boolean sHasBookDataInsert = false;
 	private static List<Book> sBookListFromDb = null;
+	private static boolean sHasBookDataInsert = false;
+	private static boolean sHasAtLeastOneNewItem = false;
 
 	public static final void performDataInstall(
 			final Context context,
@@ -43,13 +44,21 @@ public class Presenter {
 							BookItem.fromListAsContentValues(bookItemList)
 					);
 
+					// Track if at least one new item was inserted
+					if (!sHasAtLeastOneNewItem) {
+						sHasAtLeastOneNewItem = rows > 0;
+					}
+
 					if (DEBUG) Logger.i(TAG, "forEachBook inserted rows: " + rows);
 				})
 				.onFinished(() -> {
-					if (DEBUG) Logger.i(TAG, "onFinished " + sHasBookDataInsert);
+					if (DEBUG) Logger.i(TAG, "onFinished "
+							+ sHasBookDataInsert + ":" + sHasAtLeastOneNewItem);
 
 					Preferences.setHasDataInstall(context, sHasBookDataInsert);
-					callback.run(sHasBookDataInsert);
+
+					// Let the caller know at least one new item was inserted.
+					callback.run(sHasAtLeastOneNewItem);
 				})
 				.onFailure((Throwable t ) -> {
 					if (DEBUG) Logger.i(TAG, t.toString());

@@ -38,6 +38,10 @@
 			android:label="@string/app_title"
 			android:launchMode="singleTop"
 			android:theme="@style/AppTheme.NoActionBar" />
+		<service
+			android:name=".service.FetchDataIntentService" />
+		<receiver
+			android:name=".service.FetchDataBroadcastReceiver" />
 	</application>
 
 </manifest>
