@@ -20,7 +20,7 @@
 			android:id="@+id/fab_bookmark"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:src="@drawable/ic_share_white_24dp"
+			android:src="@drawable/ic_bookmark_white_24dp"
 			android:onClick="onBookmarkItClicked"
 			fab:fab_size="mini"
 			fab:fab_label="@string/fab_label_bookmark"/>
@@ -29,7 +29,7 @@
 			android:id="@+id/fab_font_larger"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:src="@drawable/ic_share_white_24dp"
+			android:src="@drawable/ic_format_size_white_24dp"
 			android:onClick="onFontSizeIncreaseClicked"
 			fab:fab_size="mini"
 			fab:fab_label="@string/fab_label_font_increase"/>
@@ -38,7 +38,7 @@
 			android:id="@+id/fab_font_smaller"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:src="@drawable/ic_share_white_24dp"
+			android:src="@drawable/ic_format_size_down_white_24dp"
 			android:onClick="onFontSizeDecreaseClicked"
 			fab:fab_size="mini"
 			fab:fab_label="@string/fab_label_font_decrease"/>
@@ -47,7 +47,7 @@
 			android:id="@+id/fab_toc"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:src="@drawable/ic_share_white_24dp"
+			android:src="@drawable/ic_library_books_white_24dp"
 			android:onClick="onBackToChapterListClicked"
 			fab:fab_size="mini"
 			fab:fab_label="@string/fab_label_toc"/>

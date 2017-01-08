@@ -178,6 +178,10 @@ public class Presenter {
 		EventBus.getDefault().post(new Presenter.FontSizeChangedEvent(fontSize));
 	}
 
+//	public static final void notifyOnAddBookmarkEvent(final int itemId) {
+//
+//	}
+
 	public interface OnSqlTransactionComplete {
 		void run(boolean success);
 	}
@@ -189,4 +193,12 @@ public class Presenter {
 			this.fontSize = fontSize;
 		}
 	}
+
+//	public static class AddBookmarkEvent {
+//		public int itemId;
+//
+//		public AddBookmarkEvent(int itemId) {
+//			this.itemId = itemId;
+//		}
+//	}
 }

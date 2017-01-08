@@ -65,6 +65,8 @@ public class BookChapterActivity extends AppCompatActivity {
 		}
 
 		mCursor = Presenter.getBookItemsFromDb(getApplicationContext(), mBookId);
+		mBookItem = getItem(mItemPosition);
+
 		initViewPager(mItemPosition, mCursor);
 	}
 
@@ -85,6 +87,7 @@ public class BookChapterActivity extends AppCompatActivity {
 		mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
+				Logger.i(TAG, "onPageSelected " + position);
 				mBookItem = getItem(position);
 			}
 		});
