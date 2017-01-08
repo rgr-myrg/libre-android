@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
  */
 public class Preferences {
 	public static final String DATA_INSTALL_KEY = "dataInstall";
+	public static final String FONT_SIZE_KEY  = "fontSize";
+	public static final int DEFAULT_FONT_SIZE = 17;
 
 	public static final void setHasDataInstall(final Context context, final boolean value) {
 		setBoolean(context, DATA_INSTALL_KEY, value);
@@ -16,8 +18,16 @@ public class Preferences {
 
 	public static final boolean hasDataInstall(final Context context) {
 		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-
 		return preferences.getBoolean(DATA_INSTALL_KEY, false);
+	}
+
+	public static final void setFontSize(final Context context, final int size) {
+		setInt(context, FONT_SIZE_KEY, size);
+	}
+
+	public static final int getFontSize(final Context context) {
+		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return preferences.getInt(FONT_SIZE_KEY, DEFAULT_FONT_SIZE);
 	}
 
 	public static final void setBoolean(final Context context,

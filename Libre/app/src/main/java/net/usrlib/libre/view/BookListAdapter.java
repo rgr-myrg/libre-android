@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.chauthai.swipereveallayout.SwipeRevealLayout;
-import com.chauthai.swipereveallayout.ViewBinderHelper;
 
 import net.usrlib.libre.R;
 import net.usrlib.libre.model.Book;
@@ -23,29 +20,23 @@ import net.usrlib.libre.model.Book;
  */
 
 public class BookListAdapter extends RecyclerView.Adapter {
-	protected ViewBinderHelper mBinderHelper = new ViewBinderHelper();
 	protected LayoutInflater mInflater = null;
 	protected Context mContext = null;
 	protected Cursor mCursor = null;
 	protected OnItemClick mOnItemClick = null;
 
 	public BookListAdapter(Context context, Cursor cursor, OnItemClick callback) {
-		Log.i("ADAPTER", "BookListAdapter");
 		this.mInflater = LayoutInflater.from(context);
 		this.mContext  = context;
 		this.mCursor   = cursor;
 		this.mOnItemClick = callback;
-
-		// Allow Swipe to reveal one row at a time
-		mBinderHelper.setOpenOnlyOne(true);
 	}
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		Log.i("ADAPTER", "onCreateViewHolder");
 		return new ViewHolder(
 				mInflater.inflate(
-						R.layout.book_item_swipe_view,
+						R.layout.book_list_card_view,
 						parent,
 						false
 				)
@@ -54,15 +45,11 @@ public class BookListAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-		Log.i("ADAPTER", "onBindViewHolder");
 		final ViewHolder viewHolder = (ViewHolder) holder;
 		final Book data = getItem(position);
 
 		if (data != null && position >= 0 && position < mCursor.getCount()) {
 			viewHolder.bindData(data);
-
-			// BinderHelper requires a unique key. Use title.
-			mBinderHelper.bind(viewHolder.swipeLayout, data.getTitleEN());
 		}
 	}
 
@@ -102,7 +89,6 @@ public class BookListAdapter extends RecyclerView.Adapter {
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder {
-		public SwipeRevealLayout swipeLayout;
 		public CardView bookCardView;
 		public ImageView bookCover;
 		public TextView bookTitle;
@@ -110,8 +96,8 @@ public class BookListAdapter extends RecyclerView.Adapter {
 
 		public ViewHolder(View view) {
 			super(view);
-			swipeLayout  = (SwipeRevealLayout) view.findViewById(R.id.book_item_swipe_layout);
-			bookCardView = (CardView) view.findViewById(R.id.book_card_view);
+
+			bookCardView = (CardView) view.findViewById(R.id.book_list_card_view);
 			bookCover  = (ImageView) view.findViewById(R.id.book_cover_image);
 			bookTitle  = (TextView) view.findViewById(R.id.book_title);
 			bookAuthor = (TextView) view.findViewById(R.id.book_author);

@@ -7,11 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdView;
 
 import net.usrlib.libre.R;
 import net.usrlib.libre.model.Book;
-import net.usrlib.libre.util.AdRequestUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -36,9 +34,6 @@ public class BookDetailActivity extends AppCompatActivity {
 	@ViewById(R.id.book_cover_image)
 	protected ImageView mBookCoverImage;
 
-	@ViewById(R.id.adView)
-	protected AdView mAdView;
-
 	@OptionsItem(android.R.id.home)
 	void onHomeBackButtonClicked() {
 		onBackPressed();
@@ -60,10 +55,5 @@ public class BookDetailActivity extends AppCompatActivity {
 				.into(mBookCoverImage);
 
 		mCollapsingToolbar.setTitle(intent.getStringExtra(Book.TITLE_EN));
-	}
-
-	@AfterViews
-	protected void requestBannerAd() {
-		AdRequestUtil.makeAdRequest(mAdView);
 	}
 }

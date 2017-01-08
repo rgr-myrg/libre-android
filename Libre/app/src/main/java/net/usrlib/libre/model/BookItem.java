@@ -19,6 +19,8 @@ public class BookItem {
 	public static final String CONTENT_SP = "contentSP";
 	public static final String CONTENT_EN = "contentEN";
 	public static final String IMAGE_URL  = "imageUrl";
+	public static final String BOOKMARKED = "bookmarked";
+	public static final String HTML_CACHE = "htmlCache";
 
 	@SerializedName("itemId")
 	private int itemId;
@@ -40,6 +42,9 @@ public class BookItem {
 
 	@SerializedName("image")
 	private String imageUrl;
+
+	private boolean bookmarked;
+	private String htmlCache;
 
 	public int getItemId() {
 		return itemId;
@@ -67,6 +72,23 @@ public class BookItem {
 
 	public String getImageUrl() {
 		return imageUrl;
+	}
+
+	public boolean isBookmarked() {
+		return bookmarked;
+	}
+
+	public String getHtmlCache() {
+		return htmlCache;
+	}
+
+	public void setHtmlCache(String htmlCache) {
+		this.htmlCache = htmlCache;
+	}
+
+	public boolean hasHtmlCache() {
+		// Handle sqlite default null Text value. Meep.
+		return !htmlCache.equals("0");
 	}
 
 	public ContentValues toContentValues() {
@@ -100,13 +122,15 @@ public class BookItem {
 
 		final BookItem bookItem = new BookItem();
 
-		bookItem.itemId    = cursor.getInt(cursor.getColumnIndex(BookItem.ITEM_ID));
-		bookItem.bookId    = cursor.getInt(cursor.getColumnIndex(BookItem.BOOK_ID));
-		bookItem.titleEN   = cursor.getString(cursor.getColumnIndex(BookItem.TITLE_EN));
-		bookItem.titleSP   = cursor.getString(cursor.getColumnIndex(BookItem.TITLE_SP));
-		bookItem.contentSP = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT_SP));
-		bookItem.contentEN = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT_EN));
-		bookItem.imageUrl  = cursor.getString(cursor.getColumnIndex(BookItem.IMAGE_URL));
+		bookItem.itemId     = cursor.getInt(cursor.getColumnIndex(BookItem.ITEM_ID));
+		bookItem.bookId     = cursor.getInt(cursor.getColumnIndex(BookItem.BOOK_ID));
+		bookItem.titleEN    = cursor.getString(cursor.getColumnIndex(BookItem.TITLE_EN));
+		bookItem.titleSP    = cursor.getString(cursor.getColumnIndex(BookItem.TITLE_SP));
+		bookItem.contentSP  = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT_SP));
+		bookItem.contentEN  = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT_EN));
+		bookItem.imageUrl   = cursor.getString(cursor.getColumnIndex(BookItem.IMAGE_URL));
+		bookItem.bookmarked = cursor.getInt(cursor.getColumnIndex(BookItem.BOOKMARKED)) == 1;
+		bookItem.htmlCache  = cursor.getString(cursor.getColumnIndex(BookItem.HTML_CACHE));
 
 		return bookItem;
 	}

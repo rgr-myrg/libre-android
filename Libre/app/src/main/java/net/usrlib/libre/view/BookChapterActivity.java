@@ -12,13 +12,16 @@ import net.usrlib.libre.BuildConfig;
 import net.usrlib.libre.R;
 import net.usrlib.libre.model.BookItem;
 import net.usrlib.libre.presenter.Presenter;
-import net.usrlib.libre.util.IntentUtil;
 import net.usrlib.libre.util.Logger;
+import net.usrlib.libre.util.Preferences;
+import net.usrlib.libre.util.UiUtil;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.UiThread;
 
 /**
  * Created by rgr-myrg on 1/4/17.
@@ -28,6 +31,7 @@ import org.androidannotations.annotations.OptionsItem;
 
 public class BookChapterActivity extends AppCompatActivity {
 	public static final String TAG = BookChapterActivity.class.getSimpleName();
+	public static final int FONT_SIZE_OFFSET = 10;
 
 	@InstanceState
 	protected int mItemPosition;
@@ -56,10 +60,11 @@ public class BookChapterActivity extends AppCompatActivity {
 		mChapterTitle = intent.getStringExtra(BookItem.TITLE_EN);
 		mItemPosition = intent.getIntExtra("position", 0);
 
-		if (BuildConfig.DEBUG) Logger.i(TAG, "bookId: " + mBookId + " pos: " + mItemPosition);
+		if (BuildConfig.DEBUG){
+			Logger.i(TAG, "bookId: " + mBookId + " pos: " + mItemPosition);
+		}
 
 		mCursor = Presenter.getBookItemsFromDb(getApplicationContext(), mBookId);
-
 		initViewPager(mItemPosition, mCursor);
 	}
 
@@ -98,13 +103,42 @@ public class BookChapterActivity extends AppCompatActivity {
 		return BookItem.fromDbCursor(mCursor);
 	}
 
-	public void onShareItClicked(View view) {
-		Logger.i(TAG, "onShareItClicked " + mBookItem.getItemId());
+	public void onFontSizeIncreaseClicked(View view) {
+		int fontSize = Preferences.getFontSize(getApplicationContext()) + FONT_SIZE_OFFSET;
+
+		notifyFontSizeChanged(fontSize);
 		closeFloatingActionMenu(view);
-		IntentUtil.startWithChooser(this, mBookItem.getTitleEN(), mBookItem.getContentEN());
 	}
 
-	public void onBookmarkItClicked(View view) {}
+	public void onFontSizeDecreaseClicked(View view) {
+		int fontSize = Preferences.getFontSize(getApplicationContext()) - FONT_SIZE_OFFSET;
+
+		notifyFontSizeChanged(fontSize);
+		closeFloatingActionMenu(view);
+	}
+
+	protected void notifyFontSizeChanged(final int fontSize) {
+		if (BuildConfig.DEBUG) {
+			Logger.i(TAG, "notifyFontSizeChanged " + fontSize);
+		}
+
+		Presenter.notifyOnFontSizeChanged(getApplicationContext(), fontSize);
+	}
+
+//	public void onShareItClicked(View view) {
+//		Logger.i(TAG, "onShareItClicked " + mBookItem.getItemId());
+//		closeFloatingActionMenu(view);
+//		IntentUtil.startWithChooser(this, mBookItem.getTitleEN(), mBookItem.getContentEN());
+//	}
+
+	public void onBookmarkItClicked(View view) {
+		if (BuildConfig.DEBUG) {
+			Logger.i(TAG, "onBookmarkItClicked " + mBookItem.getItemId());
+		}
+
+		closeFloatingActionMenu(view);
+		addBookmarkFor(mBookItem.getItemId(), view);
+	}
 
 	public void onBackToChapterListClicked(View view) {
 		closeFloatingActionMenu(view);
@@ -123,5 +157,22 @@ public class BookChapterActivity extends AppCompatActivity {
 		}
 
 		menu.close(true);
+	}
+
+	@Background
+	protected void addBookmarkFor(final int itemId, final View view) {
+		Presenter.addBookmark(getApplicationContext(), itemId, success -> {
+			onBookmarkAdded(success, view);
+		});
+	}
+
+	@UiThread
+	protected void onBookmarkAdded(final boolean success, final View view) {
+		UiUtil.makeSnackbar(
+				view,
+				getString(
+						success ? R.string.bookmark_complete : R.string.error_message
+				)
+		);
 	}
 }

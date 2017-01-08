@@ -1,5 +1,6 @@
 package net.usrlib.libre.presenter;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
@@ -12,6 +13,8 @@ import net.usrlib.libre.sql.BookTable;
 import net.usrlib.libre.util.DbHelper;
 import net.usrlib.libre.util.Logger;
 import net.usrlib.libre.util.Preferences;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -58,12 +61,16 @@ public class Presenter {
 					Preferences.setHasDataInstall(context, sHasBookDataInsert);
 
 					// Let the caller know at least one new item was inserted.
-					callback.run(sHasAtLeastOneNewItem);
+					if (callback != null) {
+						callback.run(sHasAtLeastOneNewItem);
+					}
 				})
-				.onFailure((Throwable t ) -> {
+				.onFailure((Throwable t) -> {
 					if (DEBUG) Logger.i(TAG, t.toString());
 
-					callback.run(false);
+					if (callback != null) {
+						callback.run(false);
+					}
 				})
 				.start();
 	}
@@ -125,7 +132,61 @@ public class Presenter {
 				);
 	}
 
+	public static final void saveHtmlCache(
+			final Context context,
+			final int itemId,
+			final String html,
+			final OnSqlTransactionComplete callback) {
+
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(BookItem.HTML_CACHE, html);
+
+		final int rows = DbHelper.getInstance(context).update(
+				BookItemTable.TABLE_NAME,
+				contentValues,
+				BookItemTable.WHERE_ITEM_ID,
+				new String[]{String.valueOf(itemId)}
+		);
+
+		if (callback != null) {
+			callback.run(rows > 0);
+		}
+	}
+
+	public static final void addBookmark(
+			final Context context,
+			final int itemId,
+			final OnSqlTransactionComplete callback) {
+
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(BookItem.BOOKMARKED, 1);
+
+		final int rows = DbHelper.getInstance(context).update(
+				BookItemTable.TABLE_NAME,
+				contentValues,
+				BookItemTable.WHERE_ITEM_ID,
+				new String[]{String.valueOf(itemId)}
+		);
+
+		if (callback != null) {
+			callback.run(rows > 0);
+		}
+	}
+
+	public static final void notifyOnFontSizeChanged(final Context context, final int fontSize) {
+		Preferences.setFontSize(context, fontSize);
+		EventBus.getDefault().post(new Presenter.FontSizeChangedEvent(fontSize));
+	}
+
 	public interface OnSqlTransactionComplete {
 		void run(boolean success);
+	}
+
+	public static class FontSizeChangedEvent {
+		public int fontSize;
+
+		public FontSizeChangedEvent(int fontSize) {
+			this.fontSize = fontSize;
+		}
 	}
 }

@@ -18,6 +18,8 @@ public class BookItemTable {
 					+ "%s TEXT,"
 					+ "%s TEXT,"
 					+ "%s TEXT,"
+					+ "%s TEXT,"
+					+ "%s INTEGER NOT NULL DEFAULT 0,"
 					+ "%s DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL"
 					+ ")",
 			TABLE_NAME,
@@ -28,6 +30,8 @@ public class BookItemTable {
 			BookItem.CONTENT_SP,
 			BookItem.CONTENT_EN,
 			BookItem.IMAGE_URL,
+			BookItem.HTML_CACHE,
+			BookItem.BOOKMARKED,
 			TIMESTAMP
 	);
 
@@ -35,5 +39,9 @@ public class BookItemTable {
 
 	public static final String SELECT_ALL_WITH_BOOK_ID = String.format(
 			"SELECT * FROM %s WHERE %s = ?", TABLE_NAME, BookItem.BOOK_ID
+	);
+
+	public static final String WHERE_ITEM_ID = String.format(
+			"%s = ?", BookItem.ITEM_ID
 	);
 }

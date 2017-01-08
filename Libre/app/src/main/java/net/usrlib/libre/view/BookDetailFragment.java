@@ -67,9 +67,6 @@ public class BookDetailFragment extends Fragment {
 		mRecyclerView.setAdapter(mRecyclerAdapter);
 	}
 
-	private void onFloatingActionButtonClick(final View view) {
-	}
-
 	private void startBookChapterActivity(int position) {
 		final BookItem bookItem = mRecyclerAdapter.getItem(position);
 		final Intent intent = new Intent(getContext(), BookChapterActivity_.class);
@@ -80,9 +77,7 @@ public class BookDetailFragment extends Fragment {
 		intent.putExtra(BookItem.ITEM_ID, bookItem.getItemId());
 		intent.putExtra(BookItem.TITLE_EN, bookItem.getTitleEN());
 		intent.putExtra(BookItem.TITLE_SP, bookItem.getTitleSP());
-//		intent.putExtra(BookItem.CONTENT_EN, bookItem.getContentEN());
-//		intent.putExtra(BookItem.CONTENT_SP, bookItem.getContentSP());
-//		intent.putExtra(BookItem.IMAGE_URL, bookItem.getImageUrl());
+
 		getContext().startActivity(intent);
 	}
 }
