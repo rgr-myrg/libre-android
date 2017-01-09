@@ -71,7 +71,7 @@ public class BookListFragment extends Fragment {
 		final Intent intent = new Intent(getContext(), BookDetailActivity_.class);
 
 		intent.putExtra(Book.BOOK_ID, bookItem.getBookId());
-		intent.putExtra(Book.TITLE_EN, bookItem.getTitleEN());
+		intent.putExtra(Book.TITLE, bookItem.getTitle());
 		intent.putExtra(Book.IMAGE_URL, bookItem.getImageUrl());
 
 		getContext().startActivity(intent);

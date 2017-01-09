@@ -28,8 +28,8 @@ public class FetchDataBroadcastReceiver extends BroadcastReceiver {
 	public static final void scheduleService(AppCompatActivity activity) {
 		final Calendar updateTime = Calendar.getInstance();
 		updateTime.setTimeZone(TimeZone.getDefault());
-		updateTime.set(Calendar.HOUR_OF_DAY, 12);
-		updateTime.set(Calendar.MINUTE, 30);
+//		updateTime.set(Calendar.HOUR_OF_DAY, 12);
+//		updateTime.set(Calendar.MINUTE, 30);
 
 		final Intent intent = new Intent(
 				activity.getBaseContext(), FetchDataBroadcastReceiver.class

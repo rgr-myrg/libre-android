@@ -12,11 +12,9 @@ public class BookItemTable {
 
 	public static final String CREATE_TABLE = String.format(
 			"CREATE TABLE IF NOT EXISTS %s ("
-					+ "%s INTEGER PRIMARY KEY,"
+					+ "%s TEXT PRIMARY KEY UNIQUE,"
 					+ "%s INTEGER NOT NULL,"
-					+ "%s TEXT,"
-					+ "%s TEXT,"
-					+ "%s TEXT,"
+					+ "%s TEXT NOT NULL,"
 					+ "%s TEXT,"
 					+ "%s TEXT,"
 					+ "%s INTEGER NOT NULL DEFAULT 0,"
@@ -24,13 +22,10 @@ public class BookItemTable {
 					+ "%s DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL"
 					+ ")",
 			TABLE_NAME,
-			BookItem.ITEM_ID,
+			BookItem.ITEM_KEY,
 			BookItem.BOOK_ID,
-			BookItem.TITLE_EN,
-			BookItem.TITLE_SP,
-			BookItem.CONTENT_SP,
-			BookItem.CONTENT_EN,
-			BookItem.IMAGE_URL,
+			BookItem.TITLE,
+			BookItem.CONTENT,
 			BookItem.HTML_CACHE,
 			BookItem.BOOKMARKED,
 			BookItem.MARKED_READ,
@@ -43,7 +38,7 @@ public class BookItemTable {
 			"SELECT * FROM %s WHERE %s = ?", TABLE_NAME, BookItem.BOOK_ID
 	);
 
-	public static final String WHERE_ITEM_ID = String.format(
-			"%s = ?", BookItem.ITEM_ID
+	public static final String WHERE_ITEM_KEY = String.format(
+			"%s = ?", BookItem.ITEM_KEY
 	);
 }

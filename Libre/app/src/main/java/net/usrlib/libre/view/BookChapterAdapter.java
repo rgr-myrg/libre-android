@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import net.usrlib.libre.model.BookItem;
-import net.usrlib.libre.presenter.Presenter;
-import net.usrlib.libre.util.Logger;
 
 /**
  * Created by rgr-myrg on 6/8/16.

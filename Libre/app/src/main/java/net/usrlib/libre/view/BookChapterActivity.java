@@ -57,7 +57,7 @@ public class BookChapterActivity extends AppCompatActivity {
 		final Intent intent = getIntent();
 
 		mBookId = intent.getIntExtra(BookItem.BOOK_ID, 0);
-		mChapterTitle = intent.getStringExtra(BookItem.TITLE_EN);
+		mChapterTitle = intent.getStringExtra(BookItem.TITLE);
 		mItemPosition = intent.getIntExtra("position", 0);
 
 		if (BuildConfig.DEBUG){
@@ -126,22 +126,23 @@ public class BookChapterActivity extends AppCompatActivity {
 			Logger.i(TAG, "notifyFontSizeChanged " + fontSize);
 		}
 
-		Presenter.notifyOnFontSizeChanged(getApplicationContext(), fontSize);
+		Preferences.setFontSize(getApplicationContext(), fontSize);
+		Presenter.notifyOnFontSizeChanged(fontSize);
 	}
 
 //	public void onShareItClicked(View view) {
-//		Logger.i(TAG, "onShareItClicked " + mBookItem.getItemId());
+//		Logger.i(TAG, "onShareItClicked " + mBookItem.getItemKey());
 //		closeFloatingActionMenu(view);
-//		IntentUtil.startWithChooser(this, mBookItem.getTitleEN(), mBookItem.getContentEN());
+//		IntentUtil.startWithChooser(this, mBookItem.getTitle(), mBookItem.getContent());
 //	}
 
 	public void onBookmarkItClicked(View view) {
 		if (BuildConfig.DEBUG) {
-			Logger.i(TAG, "onBookmarkItClicked " + mBookItem.getItemId());
+			Logger.i(TAG, "onBookmarkItClicked " + mBookItem.getItemKey());
 		}
 
 		closeFloatingActionMenu(view);
-		addBookmarkFor(mBookItem.getItemId(), view);
+		addBookmarkFor(mBookItem.getItemKey(), view);
 	}
 
 	public void onBackToChapterListClicked(View view) {
@@ -165,15 +166,19 @@ public class BookChapterActivity extends AppCompatActivity {
 
 	@Background
 	protected void markPreviousItemAsRead(final BookItem bookItem) {
-		Presenter.markedRead(getApplicationContext(), bookItem.getItemId(), success -> {
-			Logger.i(TAG, "markPreviousItemAsRead id: " + bookItem.getItemId());
-		});
-
+		Presenter.markedItemAsRead(
+				getApplicationContext(),
+				bookItem.getItemKey(),
+				true,
+				success -> {
+					Logger.i(TAG, "markPreviousItemAsRead key: " + bookItem.getItemKey());
+				}
+		);
 	}
 
 	@Background
-	protected void addBookmarkFor(final int itemId, final View view) {
-		Presenter.addBookmark(getApplicationContext(), itemId, success -> {
+	protected void addBookmarkFor(final String itemKey, final View view) {
+		Presenter.addBookmark(getApplicationContext(), itemKey, success -> {
 			onBookmarkAdded(success, view);
 		});
 	}

@@ -58,10 +58,10 @@ public class BookChapterFragment extends Fragment {
 		setRetainInstance(true);
 
 		// Check if WebView is loaded
-		//mHandler = new Handler();
 		mHandler.postDelayed(mRunnable, 100);
 
 		//mWebView.getSettings().setDefaultFontSize(Preferences.getFontSize(getContext()));
+
 		// Save this WebView font size as a starting point. Override default.
 		if (Preferences.getFontSize(getContext()) == Preferences.DEFAULT_FONT_SIZE) {
 			Preferences.setFontSize(getContext(), mWebView.getSettings().getTextZoom());
@@ -81,7 +81,7 @@ public class BookChapterFragment extends Fragment {
 
 		// Otherwise, retrieve html and save it to the db
 		new HtmlLoader()
-				.fetchWithUrl(mBookItem.getContentEN())
+				.fetchWithUrl(mBookItem.getContent())
 				.onRequestComplete(html -> {
 					if (BuildConfig.DEBUG) {
 						Logger.i(TAG, "Loaded html from server");
@@ -96,7 +96,7 @@ public class BookChapterFragment extends Fragment {
 	@Background
 	protected void saveHtmlCache(final String html) {
 		mBookItem.setHtmlCache(html);
-		Presenter.saveHtmlCache(getContext(), mBookItem.getItemId(), html, success -> {
+		Presenter.saveHtmlCache(getContext(), mBookItem.getItemKey(), html, success -> {
 			if (BuildConfig.DEBUG) {
 				Logger.i(TAG, "saveHtmlCache returns " + success);
 			}

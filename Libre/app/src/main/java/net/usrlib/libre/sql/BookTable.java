@@ -24,8 +24,8 @@ public class BookTable {
 					+ ")",
 			TABLE_NAME,
 			Book.BOOK_ID,
-			Book.TITLE_EN,
-			Book.TITLE_SP,
+			Book.TITLE,
+			Book.CAPTION,
 			Book.AUTHOR,
 			Book.IMAGE_URL,
 			Book.WEBSITE_URL,
@@ -36,9 +36,9 @@ public class BookTable {
 
 	public static final String DROP_TABLE = String.format("DROP TABLE IF EXISTS %s", TABLE_NAME);
 
-	public static final String SELECT_ITEM_COUNT_WITH_BOOK_ID = String.format(
-			"SELECT %s FROM %s WHERE %s = ?", Book.ITEM_COUNT, TABLE_NAME, Book.BOOK_ID
-	);
+//	public static final String SELECT_ITEM_COUNT_WITH_BOOK_ID = String.format(
+//			"SELECT %s FROM %s WHERE %s = ?", Book.ITEM_COUNT, TABLE_NAME, Book.BOOK_ID
+//	);
 
 	public static final String SELECT_ALL = String.format("SELECT * FROM %s", TABLE_NAME);
 }

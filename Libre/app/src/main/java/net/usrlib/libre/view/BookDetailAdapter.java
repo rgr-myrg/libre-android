@@ -2,7 +2,6 @@ package net.usrlib.libre.view;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import net.usrlib.libre.R;
 import net.usrlib.libre.model.BookItem;
+import net.usrlib.libre.presenter.Presenter;
 
 /**
  * Created by rgr-myrg on 12/8/16.
@@ -21,13 +21,11 @@ public class BookDetailAdapter extends RecyclerView.Adapter {
 	protected LayoutInflater mInflater = null;
 	protected Context mContext = null;
 	protected Cursor mCursor = null;
-	protected OnItemClick mOnItemClick = null;
 
-	public BookDetailAdapter(Context context, Cursor cursor, OnItemClick callback) {
+	public BookDetailAdapter(Context context, Cursor cursor) {
 		this.mInflater = LayoutInflater.from(context);
 		this.mContext  = context;
 		this.mCursor   = cursor;
-		this.mOnItemClick = callback;
 	}
 
 	@Override
@@ -87,32 +85,35 @@ public class BookDetailAdapter extends RecyclerView.Adapter {
 //	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder {
-		public CardView bookCardView;
+		public TextView sectionIcon;
 		public TextView sectionTitle;
 		public ImageView iconStatus;
 
 		public ViewHolder(View view) {
 			super(view);
 
-			bookCardView = (CardView) view.findViewById(R.id.book_detail_card_view);
+			sectionIcon  = (TextView) view.findViewById(R.id.section_icon);
 			sectionTitle = (TextView) view.findViewById(R.id.section_title);
 			iconStatus   = (ImageView) view.findViewById(R.id.section_status);
 		}
 
 		public void bindData(final BookItem data) {
-			sectionTitle.setText(data.getTitleEN());
+			sectionTitle.setText(data.getTitle());
 
-			bookCardView.setOnClickListener((View view) -> {
-				mOnItemClick.run(getAdapterPosition());
+			sectionIcon.setOnClickListener(view -> {
+				Presenter.notifyOnBookItemClicked(getAdapterPosition());
+			});
+
+			sectionTitle.setOnClickListener(view -> {
+				Presenter.notifyOnBookItemClicked(getAdapterPosition());
 			});
 
 			if (data.isMarkedRead()) {
 				iconStatus.setVisibility(View.VISIBLE);
+				iconStatus.setOnClickListener(view -> {
+					Presenter.notifyOnMarkAsUnreadEvent(data.getItemKey());
+				});
 			}
 		}
-	}
-
-	public interface OnItemClick {
-		void run(int position);
 	}
 }

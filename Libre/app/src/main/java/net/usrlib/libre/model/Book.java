@@ -14,22 +14,22 @@ import java.util.List;
 
 public class Book {
 	public static final String BOOK_ID = "bookId";
-	public static final String TITLE_EN = "titleEN";
-	public static final String TITLE_SP = "titleSP";
-	public static final String AUTHOR = "author";
-	public static final String IMAGE_URL = "imageUrl";
+	public static final String TITLE   = "title";
+	public static final String CAPTION = "caption";
+	public static final String AUTHOR  = "author";
+	public static final String IMAGE_URL   = "imageUrl";
 	public static final String WEBSITE_URL = "websiteUrl";
-	public static final String DATA_FILE = "dataFile";
-	public static final String ITEM_COUNT = "itemCount";
+	public static final String DATA_FILE   = "dataFile";
+	public static final String ITEM_COUNT  = "itemCount";
 
 	@SerializedName("bookId")
 	private int bookId;
 
-	@SerializedName("titleEN")
-	private String titleEN;
+	@SerializedName("title")
+	private String title;
 
-	@SerializedName("titleSP")
-	private String titleSP;
+	@SerializedName("caption")
+	private String caption;
 
 	@SerializedName("author")
 	private String author;
@@ -50,8 +50,8 @@ public class Book {
 		final ContentValues values = new ContentValues();
 
 		values.put(BOOK_ID, bookId);
-		values.put(TITLE_EN, titleEN);
-		values.put(TITLE_SP, titleSP);
+		values.put(TITLE, title);
+		values.put(CAPTION, caption);
 		values.put(AUTHOR, author);
 		values.put(IMAGE_URL, imageUrl);
 		values.put(WEBSITE_URL, websiteUrl);
@@ -78,8 +78,8 @@ public class Book {
 
 		final Book book = new Book();
 		book.bookId     = cursor.getInt(cursor.getColumnIndex(Book.BOOK_ID));
-		book.titleEN    = cursor.getString(cursor.getColumnIndex(Book.TITLE_EN));
-		book.titleSP    = cursor.getString(cursor.getColumnIndex(Book.TITLE_SP));
+		book.title      = cursor.getString(cursor.getColumnIndex(Book.TITLE));
+		book.caption    = cursor.getString(cursor.getColumnIndex(Book.CAPTION));
 		book.author     = cursor.getString(cursor.getColumnIndex(Book.AUTHOR));
 		book.imageUrl   = cursor.getString(cursor.getColumnIndex(Book.IMAGE_URL));
 		book.websiteUrl = cursor.getString(cursor.getColumnIndex(Book.WEBSITE_URL));
@@ -107,12 +107,12 @@ public class Book {
 		return bookId;
 	}
 
-	public String getTitleEN() {
-		return titleEN;
+	public String getTitle() {
+		return title;
 	}
 
-	public String getTitleSP() {
-		return titleSP;
+	public String getCaption() {
+		return caption;
 	}
 
 	public String getAuthor() {

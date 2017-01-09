@@ -9,15 +9,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import net.usrlib.libre.BuildConfig;
 import net.usrlib.libre.R;
 import net.usrlib.libre.model.Book;
 import net.usrlib.libre.model.BookItem;
 import net.usrlib.libre.presenter.Presenter;
+import net.usrlib.libre.util.Logger;
+import net.usrlib.libre.util.UiUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by rgr-myrg on 12/8/16.
@@ -49,7 +55,26 @@ public class BookDetailFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		// Get a fresh cursor on start.
+		// Register for Events
+		EventBus.getDefault().register(this);
+
+		initRecyclerViewAndAdapter();
+	}
+
+	@Override
+	public void onStop() {
+		// Unregister for notifications
+		EventBus.getDefault().unregister(this);
+		super.onStop();
+	}
+
+	private void initRecyclerViewAndAdapter() {
+		// Reusing adapter causes bugs in data set. Commenting out.
+//		if (mRecyclerAdapter != null) {
+//			mRecyclerAdapter.changeCursor(cursor);
+//			return;
+//		}
+
 		final Cursor cursor = Presenter.getBookItemsFromDb(getContext(), mBookId);
 
 		if (cursor == null) {
@@ -60,19 +85,7 @@ public class BookDetailFragment extends Fragment {
 			mEmptyBookListMessage.setVisibility(View.GONE);
 		}
 
-		initRecyclerViewAndAdapter(cursor);
-	}
-
-	private void initRecyclerViewAndAdapter(final Cursor cursor) {
-		// Reusing adapter causes bugs in data set. Commenting out.
-//		if (mRecyclerAdapter != null) {
-//			mRecyclerAdapter.changeCursor(cursor);
-//			return;
-//		}
-
-		mRecyclerAdapter = new BookDetailAdapter(getContext(), cursor, position -> {
-			startBookChapterActivity(position);
-		});
+		mRecyclerAdapter = new BookDetailAdapter(getContext(), cursor);
 
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -86,10 +99,35 @@ public class BookDetailFragment extends Fragment {
 		intent.putExtra(BookItem.BOOK_ID, bookItem.getBookId());
 		intent.putExtra("position", position);
 
-		intent.putExtra(BookItem.ITEM_ID, bookItem.getItemId());
-		intent.putExtra(BookItem.TITLE_EN, bookItem.getTitleEN());
-		intent.putExtra(BookItem.TITLE_SP, bookItem.getTitleSP());
+		intent.putExtra(BookItem.ITEM_KEY, bookItem.getItemKey());
+		intent.putExtra(BookItem.TITLE, bookItem.getTitle());
 
 		getContext().startActivity(intent);
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onBookItemClickedEvent(Presenter.BookItemClickedEvent event) {
+		if (BuildConfig.DEBUG) {
+			Logger.i(TAG, "onBookItemClickedEvent position: " + event.position);
+		}
+
+		startBookChapterActivity(event.position);
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onMarkAsUnreadEvent(Presenter.MarkAsUnreadEvent event) {
+		UiUtil.showAlertDialog(getContext(), "Confirm", "Mark this item as Unread?", confirm -> {
+			if (confirm) {
+				Presenter.markedItemAsRead(
+						getContext(),
+						event.itemKey,
+						false,
+						success -> {
+							Logger.i(TAG, "onMarkAsUnreadEvent id: " + event.itemKey);
+							initRecyclerViewAndAdapter();
+						}
+				);
+			}
+		});
 	}
 }

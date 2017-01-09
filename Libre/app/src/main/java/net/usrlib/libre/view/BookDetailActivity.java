@@ -54,6 +54,6 @@ public class BookDetailActivity extends AppCompatActivity {
 				.fitCenter()
 				.into(mBookCoverImage);
 
-		mCollapsingToolbar.setTitle(intent.getStringExtra(Book.TITLE_EN));
+		mCollapsingToolbar.setTitle(intent.getStringExtra(Book.TITLE));
 	}
 }

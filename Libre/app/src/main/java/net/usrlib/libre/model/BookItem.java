@@ -12,68 +12,44 @@ import java.util.List;
  */
 
 public class BookItem {
-	public static final String ITEM_ID     = "itemId";
+	public static final String ITEM_KEY    = "itemKey";
 	public static final String BOOK_ID     = "bookId";
-	public static final String TITLE_EN    = "titleEN";
-	public static final String TITLE_SP    = "titleSP";
-	public static final String CONTENT_SP  = "contentSP";
-	public static final String CONTENT_EN  = "contentEN";
-	public static final String IMAGE_URL   = "imageUrl";
+	public static final String TITLE       = "title";
+	public static final String CONTENT     = "content";
 	public static final String BOOKMARKED  = "bookmarked";
-	public static final String MARKED_READ = "markedRead";
+	public static final String MARKED_READ = "markedItemAsRead";
 	public static final String HTML_CACHE  = "htmlCache";
 
-	@SerializedName("itemId")
-	private int itemId;
+	@SerializedName("itemKey")
+	private String itemKey;
 
 	@SerializedName("bookId")
 	private int bookId;
 
-	@SerializedName("titleEN")
-	private String titleEN;
+	@SerializedName("title")
+	private String title;
 
-	@SerializedName("titleSP")
-	private String titleSP;
-
-	@SerializedName("spanish")
-	private String contentSP;
-
-	@SerializedName("english")
-	private String contentEN;
-
-	@SerializedName("image")
-	private String imageUrl;
+	@SerializedName("content")
+	private String content;
 
 	private boolean bookmarked;
 	private boolean markedRead;
 	private String htmlCache;
 
-	public int getItemId() {
-		return itemId;
+	public String getItemKey() {
+		return itemKey;
 	}
 
 	public int getBookId() {
 		return bookId;
 	}
 
-	public String getTitleEN() {
-		return titleEN;
+	public String getTitle() {
+		return title;
 	}
 
-	public String getTitleSP() {
-		return titleSP;
-	}
-
-	public String getContentSP() {
-		return contentSP;
-	}
-
-	public String getContentEN() {
-		return contentEN;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
+	public String getContent() {
+		return content;
 	}
 
 	public boolean isBookmarked() {
@@ -93,20 +69,17 @@ public class BookItem {
 	}
 
 	public boolean hasHtmlCache() {
-		// Handle sqlite default null Text value. Meep.
-		return !htmlCache.equals("0");
+		// Handle sqlite default 0 Text value. Meep.
+		return !(htmlCache == null || htmlCache.equals("0"));
 	}
 
 	public ContentValues toContentValues() {
 		final ContentValues values = new ContentValues();
 
-		values.put(ITEM_ID, itemId);
+		values.put(ITEM_KEY, itemKey);
 		values.put(BOOK_ID, bookId);
-		values.put(TITLE_EN, titleEN);
-		values.put(TITLE_SP, titleSP);
-		values.put(CONTENT_SP, contentSP);
-		values.put(CONTENT_EN, contentEN);
-		values.put(IMAGE_URL, imageUrl);
+		values.put(TITLE, title);
+		values.put(CONTENT, content);
 
 		return values;
 	}
@@ -128,13 +101,10 @@ public class BookItem {
 
 		final BookItem bookItem = new BookItem();
 
-		bookItem.itemId     = cursor.getInt(cursor.getColumnIndex(BookItem.ITEM_ID));
+		bookItem.itemKey    = cursor.getString(cursor.getColumnIndex(BookItem.ITEM_KEY));
 		bookItem.bookId     = cursor.getInt(cursor.getColumnIndex(BookItem.BOOK_ID));
-		bookItem.titleEN    = cursor.getString(cursor.getColumnIndex(BookItem.TITLE_EN));
-		bookItem.titleSP    = cursor.getString(cursor.getColumnIndex(BookItem.TITLE_SP));
-		bookItem.contentSP  = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT_SP));
-		bookItem.contentEN  = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT_EN));
-		bookItem.imageUrl   = cursor.getString(cursor.getColumnIndex(BookItem.IMAGE_URL));
+		bookItem.title      = cursor.getString(cursor.getColumnIndex(BookItem.TITLE));
+		bookItem.content    = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT));
 		bookItem.bookmarked = cursor.getInt(cursor.getColumnIndex(BookItem.BOOKMARKED)) == 1;
 		bookItem.markedRead = cursor.getInt(cursor.getColumnIndex(BookItem.MARKED_READ)) == 1;
 		bookItem.htmlCache  = cursor.getString(cursor.getColumnIndex(BookItem.HTML_CACHE));

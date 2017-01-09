@@ -3,12 +3,12 @@ package net.usrlib.libre.util;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import net.usrlib.libre.BuildConfig;
+import net.usrlib.libre.model.BookItem;
 import net.usrlib.libre.sql.BookItemTable;
 import net.usrlib.libre.sql.BookTable;
 
@@ -44,21 +44,21 @@ public class DbHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public long insert(@NonNull final String tableName, @NonNull final ContentValues item) {
-		final SQLiteDatabase db = getWritableDatabase();
-		long newRecordId = -1;
-
-		db.beginTransaction();
-
-		try {
-			newRecordId = db.insertWithOnConflict(tableName, null, item, CONFLICT_REPLACE);
-			db.setTransactionSuccessful();
-		} finally {
-			db.endTransaction();
-		}
-
-		return newRecordId;
-	}
+//	public long insert(@NonNull final String tableName, @NonNull final ContentValues item) {
+//		final SQLiteDatabase db = getWritableDatabase();
+//		long newRecordId = -1;
+//
+//		db.beginTransaction();
+//
+//		try {
+//			newRecordId = db.insertWithOnConflict(tableName, null, item, CONFLICT_REPLACE);
+//			db.setTransactionSuccessful();
+//		} finally {
+//			db.endTransaction();
+//		}
+//
+//		return newRecordId;
+//	}
 
 	public int update(
 			@NonNull final String tableName,
@@ -81,25 +81,25 @@ public class DbHelper extends SQLiteOpenHelper {
 		return numOfRows;
 	}
 
-	public int delete(
-			@NonNull final String tableName,
-			@NonNull final String where,
-			@NonNull final String[] whereArgs) {
-
-		final SQLiteDatabase db = getWritableDatabase();
-		int numOfRows = -1;
-
-		db.beginTransaction();
-
-		try {
-			numOfRows = db.delete(tableName, where, whereArgs);
-			db.setTransactionSuccessful();
-		} finally {
-			db.endTransaction();
-		}
-
-		return numOfRows;
-	}
+//	public int delete(
+//			@NonNull final String tableName,
+//			@NonNull final String where,
+//			@NonNull final String[] whereArgs) {
+//
+//		final SQLiteDatabase db = getWritableDatabase();
+//		int numOfRows = -1;
+//
+//		db.beginTransaction();
+//
+//		try {
+//			numOfRows = db.delete(tableName, where, whereArgs);
+//			db.setTransactionSuccessful();
+//		} finally {
+//			db.endTransaction();
+//		}
+//
+//		return numOfRows;
+//	}
 
 	public Cursor getDbCursorWithSql(final String sql) {
 		if (BuildConfig.DEBUG) Logger.i(TAG, sql);
@@ -117,7 +117,19 @@ public class DbHelper extends SQLiteOpenHelper {
 		return cursor;
 	}
 
+	public int bulkInsertWithOnConflict(final String tableName, final ContentValues[] values) {
+		return doBulkInsert(tableName, values, true);
+	}
+
 	public int bulkInsert(final String tableName, final ContentValues[] values) {
+		return doBulkInsert(tableName, values, false);
+	}
+
+	public int doBulkInsert(
+			final String tableName,
+			final ContentValues[] values,
+			final boolean hasReplace) {
+
 		int rowsInserted = 0;
 		final SQLiteDatabase db = getWritableDatabase();
 
@@ -129,16 +141,24 @@ public class DbHelper extends SQLiteOpenHelper {
 					Logger.i(TAG, item.toString());
 				}
 
-				long newID = db.insertWithOnConflict(tableName, null, item, CONFLICT_REPLACE);
-
-				if (newID <= 0) {
-					throw new SQLException("Failed to insert row into " + tableName);
+				if (hasReplace) {
+					db.insertWithOnConflict(tableName, null, item, CONFLICT_REPLACE);
+					rowsInserted++;
+				} else {
+					Cursor cursor = db.query(
+							tableName, null, BookItemTable.WHERE_ITEM_KEY,
+							new String[]{item.getAsString(BookItem.ITEM_KEY)}, null, null, null);
+					// Insert if not exists
+					if (cursor.getCount() > 0) {
+						continue;
+					} else {
+						db.insert(tableName, null, item);
+						rowsInserted++;
+					}
 				}
 			}
 
 			db.setTransactionSuccessful();
-			rowsInserted = values.length;
-
 		} finally {
 			db.endTransaction();
 		}

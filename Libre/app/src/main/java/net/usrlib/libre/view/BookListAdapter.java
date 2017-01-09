@@ -92,20 +92,24 @@ public class BookListAdapter extends RecyclerView.Adapter {
 		public CardView bookCardView;
 		public ImageView bookCover;
 		public TextView bookTitle;
+		public TextView bookCaption;
 		public TextView bookAuthor;
 
 		public ViewHolder(View view) {
 			super(view);
 
 			bookCardView = (CardView) view.findViewById(R.id.book_list_card_view);
-			bookCover  = (ImageView) view.findViewById(R.id.book_cover_image);
-			bookTitle  = (TextView) view.findViewById(R.id.book_title);
-			bookAuthor = (TextView) view.findViewById(R.id.book_author);
+			bookCover    = (ImageView) view.findViewById(R.id.book_cover_image);
+			bookTitle    = (TextView) view.findViewById(R.id.book_title);
+			bookCaption  = (TextView) view.findViewById(R.id.book_caption);
+			bookAuthor   = (TextView) view.findViewById(R.id.book_author);
 		}
 
 		public void bindData(final Book data) {
 			Glide.with(mContext).load(data.getImageUrl()).centerCrop().into(bookCover);
-			bookTitle.setText(data.getTitleEN());
+
+			bookTitle.setText(data.getTitle());
+			bookCaption.setText(data.getCaption());
 			bookAuthor.setText(data.getAuthor());
 
 			bookCardView.setOnClickListener((View view) -> {
