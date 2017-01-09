@@ -12,6 +12,7 @@
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
 		fab:menu_colorNormal="@color/colorPrimary"
+		fab:menu_colorPressed="@color/colorAccent"
 		fab:menu_openDirection="up"
 		fab:menu_labels_ellipsize="end"
 		fab:menu_labels_singleLine="true">
@@ -22,6 +23,8 @@
 			android:layout_height="wrap_content"
 			android:src="@drawable/ic_bookmark_white_24dp"
 			android:onClick="onBookmarkItClicked"
+			fab:fab_colorNormal="@color/colorAccent"
+			fab:fab_colorPressed="@color/colorPrimary"
 			fab:fab_size="mini"
 			fab:fab_label="@string/fab_label_bookmark"/>
 
@@ -31,6 +34,8 @@
 			android:layout_height="wrap_content"
 			android:src="@drawable/ic_format_size_white_24dp"
 			android:onClick="onFontSizeIncreaseClicked"
+			fab:fab_colorNormal="@color/colorAccent"
+			fab:fab_colorPressed="@color/colorPrimary"
 			fab:fab_size="mini"
 			fab:fab_label="@string/fab_label_font_increase"/>
 
@@ -40,6 +45,8 @@
 			android:layout_height="wrap_content"
 			android:src="@drawable/ic_format_size_down_white_24dp"
 			android:onClick="onFontSizeDecreaseClicked"
+			fab:fab_colorNormal="@color/colorAccent"
+			fab:fab_colorPressed="@color/colorPrimary"
 			fab:fab_size="mini"
 			fab:fab_label="@string/fab_label_font_decrease"/>
 
@@ -49,6 +56,8 @@
 			android:layout_height="wrap_content"
 			android:src="@drawable/ic_library_books_white_24dp"
 			android:onClick="onBackToChapterListClicked"
+			fab:fab_colorNormal="@color/colorAccent"
+			fab:fab_colorPressed="@color/colorPrimary"
 			fab:fab_size="mini"
 			fab:fab_label="@string/fab_label_toc"/>
 	</com.github.clans.fab.FloatingActionMenu>

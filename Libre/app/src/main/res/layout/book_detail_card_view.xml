@@ -9,23 +9,40 @@
 	android:layout_margin="@dimen/minimal_layout_size"
 	android:elevation="@dimen/cardview_elevation"
 	app:layout_anchorGravity="bottom"
-	card_view:contentPadding="@dimen/default_content_padding">
+	app:cardUseCompatPadding="true"
+	app:contentPaddingBottom="@dimen/maximum_content_padding"
+	card_view:contentPadding="@dimen/minimal_content_padding">
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
-        android:gravity="bottom">
+		android:gravity="bottom">
 
-		<ImageView
-			android:id="@+id/book_cover_image"
+		<TextView
+			android:id="@+id/section_icon"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:src="@drawable/common_ic_googleplayservices"/>
+			style="@style/Base.TextAppearance.AppCompat.Headline"
+			android:textColor="@color/colorGray"
+			android:textStyle="bold"
+			android:paddingRight="@dimen/default_space"
+			android:text="@string/arrow_character"/>
+
 		<TextView
 			android:id="@+id/section_title"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			style="@style/Base.TextAppearance.AppCompat.Headline"/>
+			android:layout_weight="1"
+			style="@style/Base.TextAppearance.AppCompat.Medium"/>
+
+		<ImageView
+			android:id="@+id/section_status"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="right"
+			android:visibility="invisible"
+			android:src="@drawable/ic_check_circle_black_24dp"/>
+
 	</LinearLayout>
 </android.support.v7.widget.CardView>

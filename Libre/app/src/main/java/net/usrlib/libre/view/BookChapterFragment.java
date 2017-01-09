@@ -29,6 +29,8 @@ import org.greenrobot.eventbus.ThreadMode;
 @EFragment(R.layout.book_chapter_item)
 public class BookChapterFragment extends Fragment {
 	public static final String TAG = BookChapterFragment.class.getSimpleName();
+	public static final String MIME_TYPE = "text/html; charset=utf-8";
+	public static final String ENCODING  = "utf-8";
 
 	protected BookItem mBookItem = null;
 
@@ -73,7 +75,7 @@ public class BookChapterFragment extends Fragment {
 				Logger.i(TAG, "Loading html from cache");
 			}
 
-			mWebView.loadData(mBookItem.getHtmlCache(), "text/html; charset=utf-8", "utf-8");
+			mWebView.loadData(mBookItem.getHtmlCache(), MIME_TYPE, ENCODING);
 			return;
 		}
 
@@ -85,7 +87,7 @@ public class BookChapterFragment extends Fragment {
 						Logger.i(TAG, "Loaded html from server");
 					}
 
-					mWebView.loadData(html, "text/html", "utf-8");
+					mWebView.loadData(html, MIME_TYPE, ENCODING);
 					saveHtmlCache(html);
 				})
 				.start();

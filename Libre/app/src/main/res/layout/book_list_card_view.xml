@@ -7,8 +7,9 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:layout_margin="@dimen/minimal_layout_size"
-	android:elevation="@dimen/cardview_elevation"
+	app:cardElevation="@dimen/cardview_minimal_elevation"
 	app:layout_anchorGravity="bottom"
+	app:cardUseCompatPadding="true"
 	card_view:contentPadding="@dimen/default_content_padding">
 
 	<LinearLayout
@@ -20,18 +21,21 @@
 			android:id="@+id/book_cover_image"
 			android:layout_width="@dimen/book_cover_width"
 			android:layout_height="@dimen/book_cover_height"/>
+
 		<LinearLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="9dp"
 			android:layout_marginLeft="9dp"
 			android:orientation="vertical">
+
 			<TextView
 				android:id="@+id/book_title"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="Book Title"
 				style="@style/Base.TextAppearance.AppCompat.Headline"/>
+
 			<TextView
 				android:id="@+id/book_author"
 				android:layout_width="wrap_content"

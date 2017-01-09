@@ -16,6 +16,7 @@ import net.usrlib.libre.presenter.Presenter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -35,11 +36,21 @@ public class BookDetailFragment extends Fragment {
 
 	protected BookDetailAdapter mRecyclerAdapter = null;
 
+	@InstanceState
+	protected int mBookId;
+
 	@AfterViews
 	protected void loadBookItems() {
 		final Intent intent = getActivity().getIntent();
-		final int bookId = intent.getIntExtra(Book.BOOK_ID, 0);
-		final Cursor cursor = Presenter.getBookItemsFromDb(getContext(), bookId);
+		mBookId = intent.getIntExtra(Book.BOOK_ID, 0);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		// Get a fresh cursor on start.
+		final Cursor cursor = Presenter.getBookItemsFromDb(getContext(), mBookId);
 
 		if (cursor == null) {
 			return;
@@ -53,10 +64,11 @@ public class BookDetailFragment extends Fragment {
 	}
 
 	private void initRecyclerViewAndAdapter(final Cursor cursor) {
-		if (mRecyclerAdapter != null) {
-			mRecyclerAdapter.changeCursor(cursor);
-			return;
-		}
+		// Reusing adapter causes bugs in data set. Commenting out.
+//		if (mRecyclerAdapter != null) {
+//			mRecyclerAdapter.changeCursor(cursor);
+//			return;
+//		}
 
 		mRecyclerAdapter = new BookDetailAdapter(getContext(), cursor, position -> {
 			startBookChapterActivity(position);

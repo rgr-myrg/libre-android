@@ -12,15 +12,16 @@ import java.util.List;
  */
 
 public class BookItem {
-	public static final String ITEM_ID    = "itemId";
-	public static final String BOOK_ID    = "bookId";
-	public static final String TITLE_EN   = "titleEN";
-	public static final String TITLE_SP   = "titleSP";
-	public static final String CONTENT_SP = "contentSP";
-	public static final String CONTENT_EN = "contentEN";
-	public static final String IMAGE_URL  = "imageUrl";
-	public static final String BOOKMARKED = "bookmarked";
-	public static final String HTML_CACHE = "htmlCache";
+	public static final String ITEM_ID     = "itemId";
+	public static final String BOOK_ID     = "bookId";
+	public static final String TITLE_EN    = "titleEN";
+	public static final String TITLE_SP    = "titleSP";
+	public static final String CONTENT_SP  = "contentSP";
+	public static final String CONTENT_EN  = "contentEN";
+	public static final String IMAGE_URL   = "imageUrl";
+	public static final String BOOKMARKED  = "bookmarked";
+	public static final String MARKED_READ = "markedRead";
+	public static final String HTML_CACHE  = "htmlCache";
 
 	@SerializedName("itemId")
 	private int itemId;
@@ -44,6 +45,7 @@ public class BookItem {
 	private String imageUrl;
 
 	private boolean bookmarked;
+	private boolean markedRead;
 	private String htmlCache;
 
 	public int getItemId() {
@@ -76,6 +78,10 @@ public class BookItem {
 
 	public boolean isBookmarked() {
 		return bookmarked;
+	}
+
+	public boolean isMarkedRead() {
+		return markedRead;
 	}
 
 	public String getHtmlCache() {
@@ -130,6 +136,7 @@ public class BookItem {
 		bookItem.contentEN  = cursor.getString(cursor.getColumnIndex(BookItem.CONTENT_EN));
 		bookItem.imageUrl   = cursor.getString(cursor.getColumnIndex(BookItem.IMAGE_URL));
 		bookItem.bookmarked = cursor.getInt(cursor.getColumnIndex(BookItem.BOOKMARKED)) == 1;
+		bookItem.markedRead = cursor.getInt(cursor.getColumnIndex(BookItem.MARKED_READ)) == 1;
 		bookItem.htmlCache  = cursor.getString(cursor.getColumnIndex(BookItem.HTML_CACHE));
 
 		return bookItem;

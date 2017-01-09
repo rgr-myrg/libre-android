@@ -87,7 +87,8 @@ public class BookChapterActivity extends AppCompatActivity {
 		mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
-				Logger.i(TAG, "onPageSelected " + position);
+				Logger.i(TAG, "onPageSelected " + position + " : " + mItemPosition);
+				markPreviousItemAsRead(getItem(mItemPosition));
 				mBookItem = getItem(position);
 			}
 		});
@@ -160,6 +161,14 @@ public class BookChapterActivity extends AppCompatActivity {
 		}
 
 		menu.close(true);
+	}
+
+	@Background
+	protected void markPreviousItemAsRead(final BookItem bookItem) {
+		Presenter.markedRead(getApplicationContext(), bookItem.getItemId(), success -> {
+			Logger.i(TAG, "markPreviousItemAsRead id: " + bookItem.getItemId());
+		});
+
 	}
 
 	@Background

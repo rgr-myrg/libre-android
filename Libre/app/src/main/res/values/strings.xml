@@ -33,6 +33,8 @@
 	<string name="bookmark_complete">Bookmark Added!</string>
 	<string name="deleted_complete">Deleted!</string>
 
+	<string name="arrow_character">&#187;</string>
+
 	<string name="edit_label">EDIT</string>
 	<string name="delete_label">DELETE</string>
 </resources>

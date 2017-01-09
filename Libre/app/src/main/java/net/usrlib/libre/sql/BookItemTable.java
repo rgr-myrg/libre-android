@@ -20,6 +20,7 @@ public class BookItemTable {
 					+ "%s TEXT,"
 					+ "%s TEXT,"
 					+ "%s INTEGER NOT NULL DEFAULT 0,"
+					+ "%s INTEGER NOT NULL DEFAULT 0,"
 					+ "%s DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL"
 					+ ")",
 			TABLE_NAME,
@@ -32,6 +33,7 @@ public class BookItemTable {
 			BookItem.IMAGE_URL,
 			BookItem.HTML_CACHE,
 			BookItem.BOOKMARKED,
+			BookItem.MARKED_READ,
 			TIMESTAMP
 	);
 

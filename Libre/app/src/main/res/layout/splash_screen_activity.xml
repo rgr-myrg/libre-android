@@ -13,12 +13,4 @@
 		<!--android:layout_height="@dimen/splash_screen_image_size"-->
 		<!--android:layout_gravity="center"-->
 		<!--android:src="@drawable/london_flat"/>-->
-
-	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:text="@string/splash_screen_welcome_msg"
-		style="@style/Base.TextAppearance.AppCompat.Headline"/>
-
 </LinearLayout>
